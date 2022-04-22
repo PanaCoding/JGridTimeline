@@ -1,4 +1,4 @@
-package com.panacoding.gridtimeline;
+package com.panacoding.gridtimelinesample;
 
 import org.junit.Test;
 
