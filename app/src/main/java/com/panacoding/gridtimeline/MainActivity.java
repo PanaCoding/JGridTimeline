@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         office_departments.put("human_resources","Human Resources");
         office_departments.put("sales","Sales");
         office_departments.put("executives","Executives");
+        office_departments.put("warehouse","Warehouse");
+        office_departments.put("marketing","Marketing");
+        office_departments.put("factory","Factory");
+        office_departments.put("research","Research");
 
         for (Map.Entry<String, String> department : office_departments.entrySet()) {
             String key = department.getKey();
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         // ======================== IN DATE ============================ //
 
         // X-Axis in hour(true) ::: in days set (true)
-        timeline.setX_axis_in_hours(false);
+        /*timeline.setX_axis_in_hours(false);
 
         // Set X-Axis Start Date in yyyy-MM-dd
         timeline.setStart_date("2022-04-01");
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         timeline.setEnd_date("2022-04-30");
 
         // Set the format to show dates default(yyyy-MM-dd)
-        timeline.setDate_format_to_show("dd/MM/yyyy");
+        timeline.setDate_format_to_show("dd/MM/yyyy");*/
 
         // ======================== IN DATE ============================ //
 
@@ -123,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
         event2.setBackground_color("#000000");
         event2.setText_color("#f5fc2d");
         events_list.add(event2);
+
+
+        JModelEvent event3 = new JModelEvent();
+        event3.setId("125");
+        event3.setName("Itzenia Birthday");
+        event3.setStart_date("2022-04-04");
+        event3.setEnd_date("2022-04-06");
+        event3.setStart_time("7:10");
+        event3.setEnd_time("9:25");
+        event3.setY_label_id("it");
+        events_list.add(event3);
 
         JModelEvent[] arr_events = new JModelEvent[events_list.size()];
         events_list.toArray(arr_events);
