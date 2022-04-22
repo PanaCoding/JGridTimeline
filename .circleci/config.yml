@@ -1,0 +1,87 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@1.0.3
+
+jobs:
+  build-library:
+    executor:
+      name: android/android-machine
+      resource-class: xlarge
+    steps:
+      - checkout
+      - run:
+          name: Assemble library
+          command: ./gradlew clean
+
+  deploy-to-sonatype:
+    executor:
+      name: android/android-machine
+      resource-class: xlarge
+    steps:
+      - checkout
+      - run:
+          name: Define ORG_GRADLE_PROJECT_LIBRARY_VERSION Environment Variable at Runtime
+          command: |
+            if [ $CIRCLE_TAG ]
+              then
+                echo 'export ORG_GRADLE_PROJECT_LIBRARY_VERSION=$CIRCLE_TAG' >> $BASH_ENV
+              else
+                echo "export ORG_GRADLE_PROJECT_LIBRARY_VERSION=`git tag | tail -1`-SNAPSHOT" >> $BASH_ENV
+            fi
+            source $BASH_ENV
+      - run:
+          name: Inject Maven signing key
+          command: |
+            echo $GPG_SIGNING_KEY \
+              | awk 'NR == 1 { print "SIGNING_KEY=" } 1' ORS='\\n' \
+              >> gradle.properties
+      - run:
+          name: Publish to Maven
+          command: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
+
+parameters:
+  run-schedule:
+    type: boolean
+    default: false
+
+workflows:
+  build-test-deploy:
+    when:
+      not: << pipeline.parameters.run-schedule >>
+    jobs:
+      - android/run-ui-tests:
+          name: build-and-test
+          system-image: system-images;android-23;google_apis;x86
+          test-command: ./gradlew assemble sample:connectedDebugAndroidTest
+          filters:
+            tags:
+              only: /^[0-9]+.*/
+      - hold-for-approval:
+          type: approval
+          requires:
+            - build-and-test
+          filters:
+            tags:
+              only: /^[0-9]+.*/
+            branches:
+              ignore: /.*/
+      - deploy-to-sonatype:
+          name: Deploy to Maven Central
+          requires:
+            - hold-for-approval
+          filters:
+            tags:
+              only: /^[0-9]+.*/
+
+  nightly-snapshot:
+    when: << pipeline.parameters.run-schedule >>
+    jobs:
+      - android/run-ui-tests:
+          name: build-and-test
+          system-image: system-images;android-23;google_apis;x86
+          test-command: ./gradlew assemble sample:connectedDebugAndroidTest
+      - deploy-to-sonatype:
+          name: Deploy Snapshot to Sonatype
+          requires:
+            - build-and-test
