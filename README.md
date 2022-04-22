@@ -10,7 +10,7 @@ Here is a short gif showing the functionality you get with this library:
 
 Installing
 ---------------
-###Maven
+### Maven
 Add the following maven dependency exchanging `x.x.x` for the latest release.
 ```XML
 <dependency>
@@ -20,7 +20,7 @@ Add the following maven dependency exchanging `x.x.x` for the latest release.
 </dependency>
 ```
 
-###Gradle
+### Gradle
 Add the following gradle dependency exchanging `x.x.x` for the latest release.
 ```groovy
 dependencies {
@@ -28,7 +28,7 @@ dependencies {
 }
 ```
 
-###Cloning
+### Cloning
 First of all you will have to clone the library.
 ```shell
 git clone https://github.com/PanaCoding/JGridTimeline.git
@@ -43,7 +43,7 @@ In the following dialog navigate to Gridtimeline which you cloned to your comput
 
 Getting Started
 ---------------
-###Base usage
+### Basic usage
 
 Ok lets start with your activities or fragments xml file. It might look something like this.
 ```xml
@@ -113,7 +113,7 @@ timeline.setRows_labels_width(300);
 timeline.load();
 ```
 
-###Styling
+### Styling
 
 You should do this before de load() call
 ```java
