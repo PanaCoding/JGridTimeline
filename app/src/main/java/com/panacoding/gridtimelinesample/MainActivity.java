@@ -1,8 +1,12 @@
-package com.panacoding.gridtimeline;
+package com.panacoding.gridtimelinesample;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
+import com.panacoding.gridtimeline.JModelEvent;
+import com.panacoding.gridtimeline.JModelYLabel;
+import com.panacoding.gridtimeline.JTimelineContainer;
+import com.panacoding.gridtimeline.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

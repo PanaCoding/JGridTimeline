@@ -12,6 +12,7 @@ Installing
 ---------------
 ### Maven
 Add the following maven dependency exchanging `x.x.x` for the latest release.
+
 ```XML
 <dependency>
     <groupId>com.panacoding.gridtimeline</groupId>
