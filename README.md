@@ -5,7 +5,7 @@ GridTimeline is a timeline SmartSheet similar to others timeline charts but full
 
 Here is a short gif showing the functionality you get with this library:
 
-![alt text](https://github.com/emilsjolander/StickyListHeaders/raw/master/demo.gif "Demo gif")
+![alt text](https://github.com/PanaCoding/JGridTimeline/blob/main/demo.gif "Demo gif")
 
 
 Installing
