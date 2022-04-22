@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:id="@+id/sc_main_timeline"
+    android:background="#ffff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_rows_labels"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_right_gridsheet"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_bottom_gridsheet"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Mesas" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_bottom_gridsheet"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Mesas" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <HorizontalScrollView
+            android:id="@+id/hs_hours"
+            android:scrollbars="none"
+            android:layout_toEndOf="@id/ll_rows_labels"
+            android:layout_alignTop="@id/ll_rows_labels"
+            android:layout_alignBottom="@id/ll_rows_labels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/ll_columns_labels"
+                        android:background="@drawable/border_bottom_gridsheet"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="5 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="6 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="5 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:background="@drawable/border_right_gridsheet"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="6 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+
+                        <TextView
+                            android:text="5 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+
+                        <TextView
+                            android:text="5 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="6 AM"
+                            android:padding="10dp"
+                            android:layout_width="150dp"
+                            android:gravity="center"
+                            android:layout_height="wrap_content" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.panacoding.gridtimeline.JGridDraw
+                            android:id="@+id/jGridDraw"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <FrameLayout
+                            android:id="@+id/fl_info_plane"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </FrameLayout>
+
+                    </FrameLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/indicador_actual_time"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="-7dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/triangule_down_timeline"
+                        android:rotation="180"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="horizontal"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="-8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:background="#56bbf0"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"/>
+
+                        <View
+                            android:background="#8056bbf0"
+                            android:layout_width="10dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_height="match_parent"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </RelativeLayout>
+
+        </HorizontalScrollView>
+
+
+    </RelativeLayout>
+
+</ScrollView>
+

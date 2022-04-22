@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:text="5 AM"
+    android:padding="10dp"
+    android:layout_width="150dp"
+    android:gravity="start|center_vertical"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:textColor="#8d99ae"
+    android:textSize="14dp"
+    android:layout_height="45dp"
+    tools:ignore="MissingDefaultResource" />
