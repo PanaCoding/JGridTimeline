@@ -78,15 +78,15 @@ office_departments.put("factory","Factory");
 office_departments.put("research","Research");
 
 for (Map.Entry<String, String> department : office_departments.entrySet()) {
-String key = department.getKey();
-String value = department.getValue();
-
-JModelYLabel yLabel = new JModelYLabel();
-
-yLabel.setId(key);
-yLabel.setName(value);
-
-list_y_labels.add(yLabel);
+    String key = department.getKey();
+    String value = department.getValue();
+    
+    JModelYLabel yLabel = new JModelYLabel();
+    
+    yLabel.setId(key);
+    yLabel.setName(value);
+    
+    list_y_labels.add(yLabel);
 }
 
 timeline.setyLabels(list_y_labels);
@@ -111,4 +111,76 @@ timeline.setRows_labels_width(300);
 
 // init timeline
 timeline.load();
+```
+
+###Styling
+
+You should do this before de load() call
+```java
+
+// Grid Stroke color
+timeline.setStroke_color_grid("#edf2f4"); // optional
+timeline.setInner_line_col_multiplier(2); // optional
+
+// Timeline background color
+timeline.setColor_background_timeline("#ffffff"); // optional default white
+
+// Labels text color
+timeline.setLabels_text_color("#8d99ae"); // optional
+
+```
+
+### ADD Events to the timeline
+```java
+
+ArrayList<JModelEvent> events_list = new ArrayList<>();
+
+JModelEvent event1 = new JModelEvent();
+
+event1.setId("120");
+event1.setName("Josue Birthday");
+event1.setStart_time("7:25");
+event1.setEnd_time("8:25");
+event1.setY_label_id("sales"); // id y label
+events_list.add(event1);
+
+JModelEvent event2 = new JModelEvent();
+
+event2.setId("122");
+event2.setName("Joel Retirement");
+event2.setStart_time("10:30");
+event2.setEnd_time("11:35");
+event2.setY_label_id("executives");
+event2.setBackground_color("#000000"); // you can change the color background of the event
+event2.setText_color("#f5fc2d"); // you can change the text_color of the event
+events_list.add(event2);
+
+JModelEvent event3 = new JModelEvent();
+
+event3.setId("125");
+event3.setName("Itzenia Birthday");
+event3.setStart_time("7:10");
+event3.setEnd_time("9:25");
+event3.setY_label_id("it");
+events_list.add(event3);
+
+JModelEvent[] arr_events = new JModelEvent[events_list.size()];
+events_list.toArray(arr_events);
+
+timeline.setEvents(arr_events); // set events to render on the timeline
+
+// Add event click event (Optional)
+timeline.setOnEventClick(new JTimelineContainer.OnEventClick() {
+    @Override
+    public void onEventClick(JModelEvent event) {
+        /**
+         *
+         *
+         *
+         */
+        Toast.makeText(MainActivity.this, "event clicked "+event.getId(), Toast.LENGTH_SHORT).show();
+    }
+});
+
+
 ```
