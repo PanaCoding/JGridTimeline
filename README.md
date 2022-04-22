@@ -184,3 +184,40 @@ timeline.setOnEventClick(new JTimelineContainer.OnEventClick() {
 
 
 ```
+
+
+### How to use Dates instead of Hours
+
+First you need to set X-Axis in hour to(false) and add date to start and date to finish before de load() call
+```java
+timeline.setX_axis_in_hours(false);
+
+// Set X-Axis Start Date in yyyy-MM-dd
+timeline.setStart_date("2022-04-01");
+
+// Set X-Axis End Date in yyyy-MM-dd
+timeline.setEnd_date("2022-04-30");
+
+// Set the format to show dates default(yyyy-MM-dd)
+timeline.setDate_format_to_show("dd/MM/yyyy");
+```
+
+Now when you add the events you should add start_date and end_date instead of start_time,end_time like this
+```java
+ArrayList<JModelEvent> events_list = new ArrayList<>();
+
+JModelEvent event1 = new JModelEvent();
+
+event1.setId("120");
+event1.setName("Josue Birthday");
+event1.setStart_date("2022-04-04");
+event1.setEnd_date("2022-04-06");
+event1.setY_label_id("sales");
+events_list.add(event1);
+
+JModelEvent[] arr_events = new JModelEvent[events_list.size()];
+events_list.toArray(arr_events);
+
+timeline.setEvents(arr_events);
+```
+
