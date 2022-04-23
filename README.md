@@ -25,7 +25,7 @@ Add the following maven dependency exchanging `x.x.x` for the latest release.
 Add the following gradle dependency exchanging `x.x.x` for the latest release.
 ```groovy
 dependencies {
-    compile 'com.panacoding.gridtimeline:gridtimeline:x.x.x'
+    implementation 'com.panacoding.gridtimeline:gridtimeline:x.x.x'
 }
 ```
 
