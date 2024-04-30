@@ -4,6 +4,11 @@ public class JModelYLabel {
     String name;
     String id;
 
+    public JModelYLabel(String id,String name){
+        this.name = name;
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

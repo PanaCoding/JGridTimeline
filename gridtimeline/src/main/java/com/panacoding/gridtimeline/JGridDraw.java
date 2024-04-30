@@ -80,7 +80,10 @@ public class JGridDraw extends View {
 
         cell_height = height / rowsCount;
         cell_width = width / columnsCount;
-        onCellSizeChange.onCellSizeChange(cell_width,cell_height);
+
+        if(onCellSizeChange!=null){
+            onCellSizeChange.onCellSizeChange(cell_width,cell_height);
+        }
 
         super.onDraw(canvas);
     }
