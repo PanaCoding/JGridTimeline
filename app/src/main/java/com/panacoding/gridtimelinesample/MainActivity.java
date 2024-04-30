@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        /** ================ ADD Events ======================= **/
+        /** ================ ADD Events =================== **/
         ArrayList<JModelEvent> events_list = new ArrayList<>();
 
         JModelEvent event1 = new JModelEvent();
@@ -97,16 +97,16 @@ public class MainActivity extends AppCompatActivity {
         JTimeLine.JTimelineBuilder builder = new JTimeLine.JTimelineBuilder(this,timeline,"2022-04-18")
             .setYLabelsTitle("Departments") // Y-Axis Title (optional)
             .setYLabels(list_y_labels)
-            .setStartHour24(7) // Set initial hour 1-24 default 5am (optional)
-            .setEndHour24(23) // Set final hour 1-24 default 24 (optional)
-            .setIntervalMins(30)// Set intervals in minutes default 60mins (optional)
-            .setShowActualHourIndicator(true) // Show actual hour indicator (default: false) (optional)
-            .setRowsLabelsWidth(300) // Set row labels width in Pixels default 200px (optional)
-            .setStrokeColorGrid("#edf2f4") // Grid Stroke color optional
-            .setInnerLineColMultiplier(2) // optional
-            .setColorBackgroundTimeline("#ffffff") // Timeline background color optional default white
-            .setLabelsTextColor("#8d99ae")
-            .setEvents(arr_events); // Labels text color optional
+            .setStartHour24(7) // Set initial hour 1-24 (default: 5am)
+            .setEndHour24(23) // Set final hour 1-24 (default: 24)
+            .setIntervalMins(30)// Set intervals in minutes (default: 60min)
+            .setShowActualHourIndicator(true) // Show actual hour indicator (default: false)
+            .setRowsLabelsWidth(300) // Set row labels width in Pixels (default: 200px)
+            .setStrokeColorGrid("#edf2f4") // Grid Stroke color (default: #edf2f4)
+            .setInnerLineColMultiplier(2) // (default: 4)
+            .setColorBackgroundTimeline("#ffffff") // Timeline background color (default: white)
+            .setLabelsTextColor("#8d99ae") // Labels text color optional
+            .setEvents(arr_events);
 
         /** Add event click event (Optional) **/
         builder.setOnEventClick(new OnEventClick() {
@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
         JTimeLine jTimeLine = builder.build();
         jTimeLine.load();
-
 
     }
 }
