@@ -1,87 +1,92 @@
-version: 2.1
-
+version: '2.1'
 orbs:
-  android: circleci/android@1.0.3
+  gradle: circleci/gradle@2.2.0
+  android: circleci/android@2.3.0
 
+commands:
+  library-setup:
+    description: Restore cache, config gradlew, download dependencies and save cache
+    steps:
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "lib/build.gradle" }}
+      - run:
+          name: Set up library dependencies
+          command: |
+            ./gradlew wrapper
+            ./gradlew lib:androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "lib/build.gradle" }}
 jobs:
-  build-library:
+  android-test:
     executor:
       name: android/android-machine
-      resource-class: xlarge
+      resource-class: large
+      tag: 2023.05.1
     steps:
       - checkout
+      - library-setup
+      - android/create-avd:
+          avd-name: testDevice
+          system-image: system-images;android-30;google_apis;x86
+          install: true
+      - android/start-emulator:
+          avd-name: testDevice
+          no-window: true
+          post-emulator-launch-assemble-command: echo "Emulator Started"
       - run:
-          name: Assemble library
-          command: ./gradlew clean
-
+          name: Run Android Tests
+          command: ./gradlew lib:connectedDebugAndroidTest
+      - store_test_results:
+          path: lib/build/outputs/androidTest-results
+  test-sonar:
+    executor:
+      name: android/android-machine
+      resource-class: large
+      tag: 2023.05.1
+    steps:
+      - checkout
+      - library-setup
+      - run:
+          name: Run Tests
+          command: ./gradlew lib:testDebugUnitTest jacocoTestReport sonarqube
+      - store_test_results:
+          path: lib/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
     executor:
       name: android/android-machine
-      resource-class: xlarge
+      resource-class: large
+      tag: 2023.05.1
     steps:
       - checkout
-      - run:
-          name: Define ORG_GRADLE_PROJECT_LIBRARY_VERSION Environment Variable at Runtime
-          command: |
-            if [ $CIRCLE_TAG ]
-              then
-                echo 'export ORG_GRADLE_PROJECT_LIBRARY_VERSION=$CIRCLE_TAG' >> $BASH_ENV
-              else
-                echo "export ORG_GRADLE_PROJECT_LIBRARY_VERSION=`git tag | tail -1`-SNAPSHOT" >> $BASH_ENV
-            fi
-            source $BASH_ENV
+      - library-setup
       - run:
           name: Inject Maven signing key
           command: |
             echo $GPG_SIGNING_KEY \
-              | awk 'NR == 1 { print "SIGNING_KEY=" } 1' ORS='\\n' \
-              >> gradle.properties
+            | awk 'NR == 1 { print "SIGNING_KEY=" } 1' ORS='\\n' \
+            >> gradle.properties
       - run:
           name: Publish to Maven
-          command: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
-
-parameters:
-  run-schedule:
-    type: boolean
-    default: false
+          command: ./gradlew lib:assemble publish
 
 workflows:
-  build-test-deploy:
-    when:
-      not: << pipeline.parameters.run-schedule >>
+  build-test-sonar-publish:
     jobs:
-      - android/run-ui-tests:
-          name: build-and-test
-          system-image: system-images;android-23;google_apis;x86
-          test-command: ./gradlew assemble app:connectedDebugAndroidTest
-          filters:
-            tags:
-              only: /^[0-9]+.*/
-      - hold-for-approval:
-          type: approval
+      - android-test
+      - test-sonar:
+          context:
+            - SonarCloud
+            - mobile
+      - deploy-to-sonatype:
+          name: Deploy to sonatype and build sample apps
           requires:
-            - build-and-test
+            - test-sonar
+          context:
+            - mobile
+            - maven-sign
           filters:
-            tags:
-              only: /^[0-9]+.*/
             branches:
-              ignore: /.*/
-      - deploy-to-sonatype:
-          name: Deploy to Maven Central
-          requires:
-            - hold-for-approval
-          filters:
-            tags:
-              only: /^[0-9]+.*/
-
-  nightly-snapshot:
-    when: << pipeline.parameters.run-schedule >>
-    jobs:
-      - android/run-ui-tests:
-          name: build-and-test
-          system-image: system-images;android-23;google_apis;x86
-          test-command: ./gradlew assemble app:connectedDebugAndroidTest
-      - deploy-to-sonatype:
-          name: Deploy Snapshot to Sonatype
-          requires:
-            - build-and-test
+              only:
+                - staging
