@@ -40,53 +40,43 @@ jobs:
           command: ./gradlew gridtimeline:connectedDebugAndroidTest
       - store_test_results:
           path: gridtimeline/build/outputs/androidTest-results
-  test-sonar:
-    executor:
-      name: android/android-machine
-      resource-class: large
-      tag: 2023.05.1
-    steps:
-      - checkout
-      - library-setup
-      - run:
-          name: Run Tests
-          command: ./gradlew gridtimeline:testDebugUnitTest
-      - store_test_results:
-          path: gridtimeline/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
     executor:
       name: android/android-machine
-      resource-class: large
-      tag: 2023.05.1
+      resource-class: xlarge
     steps:
       - checkout
-      - library-setup
+      - run:
+          name: Define ORG_GRADLE_PROJECT_LIBRARY_VERSION Environment Variable at Runtime
+          command: |
+            if [ $CIRCLE_TAG ]
+              then
+                echo 'export ORG_GRADLE_PROJECT_LIBRARY_VERSION=$CIRCLE_TAG' >> $BASH_ENV
+              else
+                echo "export ORG_GRADLE_PROJECT_LIBRARY_VERSION=`git tag | tail -1`-SNAPSHOT" >> $BASH_ENV
+            fi
+            source $BASH_ENV
       - run:
           name: Inject Maven signing key
           command: |
             echo $GPG_SIGNING_KEY \
-            | awk 'NR == 1 { print "SIGNING_KEY=" } 1' ORS='\\n' \
-            >> gradle.properties
+              | awk 'NR == 1 { print "SIGNING_KEY=" } 1' ORS='\\n' \
+              >> gradle.properties
       - run:
           name: Publish to Maven
-          command: ./gradlew gridtimeline:assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
+          command: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 workflows:
-  build-test-sonar-publish:
+  build-test-gridtimeline-publish:
     jobs:
       - android-test
-      - test-sonar:
-          context:
-            - SonarCloud
-            - mobile
       - deploy-to-sonatype:
           name: Deploy to sonatype and build sample apps
           requires:
-            - test-sonar
+            - android-test
           context:
             - mobile
             - maven-sign
           filters:
-            branches:
-              only:
-                - staging
+            tags:
+              only: /^[0-9]+.*/
