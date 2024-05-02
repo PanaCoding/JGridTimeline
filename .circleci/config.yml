@@ -13,7 +13,7 @@ commands:
           name: Set up library dependencies
           command: |
             ./gradlew wrapper
-            ./gradlew lib:androidDependencies
+            ./gradlew gridtimeline:androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -37,7 +37,7 @@ jobs:
           post-emulator-launch-assemble-command: echo "Emulator Started"
       - run:
           name: Run Android Tests
-          command: ./gradlew lib:connectedDebugAndroidTest
+          command: ./gradlew gridtimeline:connectedDebugAndroidTest
       - store_test_results:
           path: lib/build/outputs/androidTest-results
   test-sonar:
@@ -50,7 +50,7 @@ jobs:
       - library-setup
       - run:
           name: Run Tests
-          command: ./gradlew lib:testDebugUnitTest jacocoTestReport sonarqube
+          command: ./gradlew gridtimeline:testDebugUnitTest jacocoTestReport sonarqube
       - store_test_results:
           path: lib/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
@@ -69,7 +69,7 @@ jobs:
             >> gradle.properties
       - run:
           name: Publish to Maven
-          command: ./gradlew lib:assemble publish
+          command: ./gradlew gridtimeline:assemble publish
 
 workflows:
   build-test-sonar-publish:
