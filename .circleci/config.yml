@@ -8,7 +8,7 @@ commands:
     description: Restore cache, config gradlew, download dependencies and save cache
     steps:
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "lib/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "gridtimeline/build.gradle" }}
       - run:
           name: Set up library dependencies
           command: |
@@ -17,7 +17,7 @@ commands:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "lib/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "gridtimeline/build.gradle" }}
 jobs:
   android-test:
     executor:
@@ -39,7 +39,7 @@ jobs:
           name: Run Android Tests
           command: ./gradlew gridtimeline:connectedDebugAndroidTest
       - store_test_results:
-          path: lib/build/outputs/androidTest-results
+          path: gridtimeline/build/outputs/androidTest-results
   test-sonar:
     executor:
       name: android/android-machine
@@ -52,7 +52,7 @@ jobs:
           name: Run Tests
           command: ./gradlew gridtimeline:testDebugUnitTest
       - store_test_results:
-          path: lib/build/test-results/testDebugUnitTest
+          path: gridtimeline/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
     executor:
       name: android/android-machine
