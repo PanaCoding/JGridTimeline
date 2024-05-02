@@ -37,15 +37,30 @@ jobs:
           post-emulator-launch-assemble-command: echo "Emulator Started"
       - run:
           name: Run Android Tests
-          command: ./gradlew gridtimeline:connectedDebugAndroidTest
+          command: ./gradlew app:connectedDebugAndroidTest
       - store_test_results:
           path: gridtimeline/build/outputs/androidTest-results
+  test-sonar:
+    executor:
+      name: android/android-machine
+      resource-class: large
+      tag: 2023.05.1
+    steps:
+      - checkout
+      - library-setup
+      - run:
+          name: Run Tests
+          command: ./gradlew app:testDebugUnitTest
+      - store_test_results:
+          path: gridtimeline/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
     executor:
       name: android/android-machine
-      resource-class: xlarge
+      resource-class: large
+      tag: 2023.05.1
     steps:
       - checkout
+      - library-setup
       - run:
           name: Define ORG_GRADLE_PROJECT_LIBRARY_VERSION Environment Variable at Runtime
           command: |
@@ -67,13 +82,17 @@ jobs:
           command: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 workflows:
-  build-test-gridtimeline-publish:
+  build-test-sonar-publish:
     jobs:
       - android-test
+      - test-sonar:
+          context:
+            - SonarCloud
+            - mobile
       - deploy-to-sonatype:
           name: Deploy to sonatype and build sample apps
           requires:
-            - android-test
+            - test-sonar
           context:
             - mobile
             - maven-sign
