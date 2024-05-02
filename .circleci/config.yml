@@ -69,7 +69,7 @@ jobs:
             >> gradle.properties
       - run:
           name: Publish to Maven
-          command: ./gradlew gridtimeline:assemble publish
+          command: ./gradlew gridtimeline:assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 workflows:
   build-test-sonar-publish:
