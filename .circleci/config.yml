@@ -50,7 +50,7 @@ jobs:
       - library-setup
       - run:
           name: Run Tests
-          command: ./gradlew gridtimeline:testDebugUnitTest jacocoTestReport sonarqube
+          command: ./gradlew gridtimeline:testDebugUnitTest
       - store_test_results:
           path: lib/build/test-results/testDebugUnitTest
   deploy-to-sonatype:
